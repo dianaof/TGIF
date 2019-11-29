@@ -48,9 +48,8 @@ document.getElementById("democrat").addEventListener("click", partyClick);
 document.getElementById("independent").addEventListener("click", partyClick);
 
 
-
 function partyClick () {
-    var filteredMembers = []
+    var filteredMembers = [];
     for (var i = 0; i < senateMembers.length; i++) {
        
         if (document.getElementById("democrat").checked && senateMembers[i].party == "D") {
@@ -87,24 +86,37 @@ var dropdownList = document.getElementById("stateSelect");
 function stateSelect() {
     
     var listStates = [];
-
+    
     for (var i = 0; i < senateMembers.length; i++){   
 
         if (!listStates.includes(senateMembers[i])) {
             listStates.push(senateMembers[i].state);
         }
+        
     }
     //Hello people
-    
+    //sort array states
     for (var i = 0; i < listStates.length; i++){
     
     var newOption = document.createElement("option"); // we create one option element
 
-        newOption.innerHTML = listStates[i] // we make the value of the option quale to each value of our new container 
+        newOption.innerHTML = listStates[i] // we make the value of the option equale to each value of our new container 
     
         dropdownList.appendChild(newOption); // we put the option in select
      }
-
 }
 
 stateSelect();
+
+document.getElementById("stateSelect").addEventListener("change", stateClick);
+
+function stateClick() {
+    
+    var filteredStateMembers = [];
+
+    for (var i = 0; i < senateMembers.length; i++) {
+
+        filteredStateMembers.push(senateMembers[i]);
+    }
+
+}
