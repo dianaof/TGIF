@@ -94,6 +94,7 @@ function stateSelect() {
             listStates.push(senateMembers[i].state);
         }
     }
+    //Hello people
     
     for (var i = 0; i < listStates.length; i++){
     
@@ -105,4 +106,5 @@ function stateSelect() {
      }
 
 }
+
 stateSelect();
