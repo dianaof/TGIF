@@ -1,9 +1,42 @@
 //document.getElementById("senate-data").innerHTML = JSON.stringify(data,null,2);
 
-var senateMembers = data.results[0].members;
+var senateMembers;
+
+fetch ("https://api.propublica.org/congress/v1/113/senate/members.json",{
+
+method: "GET",
+headers: {
+    'X-API-key': 'USiTg4aV1o26w6EjIpr190WMQ6HdnmD1gael0wFG'
+}}).then(function (response) {
+
+    if (response.ok) {
+        console.log(response);
+        return response.json();
+    }
+
+    throw new Error(response.statusText);
+}).then(function (json) {
+
+    senateMembers = json.results[0].members;
+
+        createTable(senateMembers);
+        stateSelect();
+
+    console.log(senateMembers);
+
+}).catch(function (error) {
+
+    console.log("Request failed: " + error.message);
+});
+
+console.log(senateMembers);
+
+//var senateMembers = data.results[0].members;
+
 
 function createTable (list) {
      document.getElementById("senate-table").innerHTML = "";
+
     for (var i = 0; i < list.length; i++) {
         var newRow = document.createElement ("tr");
        
@@ -40,45 +73,45 @@ function createTable (list) {
 
 }
 
-createTable(senateMembers);
+// createTable(senateMembers);
 
 
-document.getElementById("republican").addEventListener("click", partyClick);
-document.getElementById("democrat").addEventListener("click", partyClick);
-document.getElementById("independent").addEventListener("click", partyClick);
+document.getElementById("republican").addEventListener("click", stateClick);
+document.getElementById("democrat").addEventListener("click", stateClick);
+document.getElementById("independent").addEventListener("click", stateClick);
 
 
-function partyClick () {
-    var filteredMembers = [];
-    for (var i = 0; i < senateMembers.length; i++) {
+// function partyClick () {
+//     var filteredMembers = [];
+//     for (var i = 0; i < senateMembers.length; i++) {
        
-        if (document.getElementById("democrat").checked && senateMembers[i].party == "D") {
-            filteredMembers.push(senateMembers[i]);
+//         if (document.getElementById("democrat").checked && senateMembers[i].party == "D") {
+//             filteredMembers.push(senateMembers[i]);
            
-        }
+//         }
             
-        if (document.getElementById("republican").checked && senateMembers[i].party == "R") {
-            filteredMembers.push(senateMembers[i]);
+//         if (document.getElementById("republican").checked && senateMembers[i].party == "R") {
+//             filteredMembers.push(senateMembers[i]);
            
-        }
+//         }
 
-        if (document.getElementById("independent").checked && senateMembers[i].party == "I") {
-            filteredMembers.push(senateMembers[i]);
+//         if (document.getElementById("independent").checked && senateMembers[i].party == "I") {
+//             filteredMembers.push(senateMembers[i]);
            
-        }
+//         }
         
-    }
-// console.log(filteredMembers);
+//     }
+// // console.log(filteredMembers);
 
-            if (filteredMembers.length == 0 && !document.getElementById("independent").checked && !document.getElementById("republican").checked && !document.getElementById("independent").checked) {
-                // console.log("No checked");
+//             if (filteredMembers.length == 0 && !document.getElementById("independent").checked && !document.getElementById("republican").checked && !document.getElementById("independent").checked) {
+//                 // console.log("No checked");
                 
-                createTable(senateMembers)
-            }else {
-                // console.log("checked");
-                createTable(filteredMembers)
-            }
-}
+//                 createTable(senateMembers)
+//             }else {
+//                 // console.log("checked");
+//                 createTable(filteredMembers)
+//             }
+// }
 
 
 var dropdownList = document.getElementById("stateSelect");
@@ -89,13 +122,14 @@ function stateSelect() {
     
     for (var i = 0; i < senateMembers.length; i++){   
 
-        if (!listStates.includes(senateMembers[i])) {
+        if (!listStates.includes(senateMembers[i].state)) {
             listStates.push(senateMembers[i].state);
         }
         
     }
     //Hello people
-    //sort array states
+    listStates.sort();
+
     for (var i = 0; i < listStates.length; i++){
     
     var newOption = document.createElement("option"); // we create one option element
@@ -106,7 +140,7 @@ function stateSelect() {
      }
 }
 
-stateSelect();
+//stateSelect();
 
 document.getElementById("stateSelect").addEventListener("change", stateClick);
 
@@ -114,9 +148,53 @@ function stateClick() {
     
     var filteredStateMembers = [];
 
+    var dropdownList = document.getElementById("stateSelect");
+
     for (var i = 0; i < senateMembers.length; i++) {
 
-        filteredStateMembers.push(senateMembers[i]);
-    }
+        if (senateMembers[i].state == dropdownList.value || dropdownList.value == "All"){
 
+            if (senateMembers[i].party == "D" && document.getElementById("democrat").checked){
+                filteredStateMembers.push(senateMembers[i]);
+            }
+
+            if (senateMembers[i].party == "R" && document.getElementById("republican").checked){
+                filteredStateMembers.push(senateMembers[i]);
+            }
+               
+            if (senateMembers[i].party == "I" && document.getElementById("independent").checked){
+                filteredStateMembers.push(senateMembers[i]);   
+            }
+
+            if (!document.getElementById("democrat").checked && !document.getElementById             ("republican").checked && !document.getElementById("independent").checked){
+                filteredStateMembers.push(senateMembers[i]);  
+            }
+        }
+   
+    }
+    if (filteredStateMembers.length == 0) {
+        document.getElementById("senate-table").innerHTML = "";
+        
+        var row = document.createElement ("tr");
+        
+        var message = document.createElement ("td");
+       
+        message.innerHTML = "No Results Matching."
+        
+        document.getElementById("senateState").append(message);
+       
+        row.append(message);
+       
+        document.getElementById("senate-table").appendChild(row);
+    }   
+        else {
+        createTable(filteredStateMembers);
+        }                                       
 }
+stateClick();
+
+// var overlay = document.getElementById("overlay");
+
+// window.addEventListener('load', function(){
+//   overlay.style.display = 'none';
+// })

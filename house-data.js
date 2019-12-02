@@ -2,6 +2,35 @@
 
 var houseMembers = data.results[0].members;
 
+fetch ("https://api.propublica.org/congress/v1/113/senate/house.json",{
+
+method: "GET",
+headers: {
+    'X-API-key': 'USiTg4aV1o26w6EjIpr190WMQ6HdnmD1gael0wFG'
+}}).then(function (response) {
+
+    if (response.ok) {
+        console.log(response);
+        return response.json();
+    }
+
+    throw new Error(response.statusText);
+}).then(function (json) {
+
+    houseMembers = json.results[0].members;
+
+        createTable(houseMembers);
+        stateSelect();
+
+    console.log(houseMembers);
+
+}).catch(function (error) {
+
+    console.log("Request failed: " + error.message);
+});
+
+console.log(houseMembers);
+
 function createTable (list) {
     document.getElementById("house-table").innerHTML = ""
     for (var i = 0; i < list.length; i++) {
@@ -106,3 +135,51 @@ function stateSelect() {
 
 } }
 stateSelect();
+
+document.getElementById("stateSelect").addEventListener("change", stateClick);
+
+function stateClick() {
+    
+    var filteredHouseMembers = [];
+
+    for (var i = 0; i < houseMembers.length; i++) {
+
+        if (houseMembers[i].state == dropdownList.value || dropdownList.value == "All"){
+
+            if (houseMembers[i].party == "D" && document.getElementById("democrat").checked){
+                filteredHouseMembers.push(houseMembers[i]);
+            }
+
+            if (houseMembers[i].party == "R" && document.getElementById("republican").checked){
+                filteredHouseMembers.push(houseMembers[i]);
+            }
+               
+            if (houseMembers[i].party == "I" && document.getElementById("independent").checked){
+                filteredHouseMembers.push(houseMembers[i]);   
+            }
+
+            if (!document.getElementById("democrat").checked && !document.getElementById             ("republican").checked && !document.getElementById("independent").checked){
+                filteredHouseMembers.push(houseMembers[i]);  
+            }
+        }
+        
+    }                                       if (filteredHouseMembers.length == 0) {
+        document.getElementById("house-table").innerHTML = "";
+        
+        var row = document.createElement ("tr");
+        
+        var message = document.createElement ("td");
+       
+        message.innerHTML = "No Results Matching."
+        
+        document.getElementById("houseState").append(message);
+       
+        row.append(message);
+       
+        document.getElementById("house-table").appendChild(row);
+    }   
+        else {
+        createTable(filteredHouseMembers);
+        }                                       
+}
+  
