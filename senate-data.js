@@ -18,9 +18,11 @@ headers: {
 }).then(function (json) {
 
     senateMembers = json.results[0].members;
-
+        
+        loader();
         createTable(senateMembers);
         stateSelect();
+        
 
     console.log(senateMembers);
 
@@ -180,8 +182,6 @@ function stateClick() {
         var message = document.createElement ("td");
        
         message.innerHTML = "No Results Matching."
-        
-        document.getElementById("senateState").append(message);
        
         row.append(message);
        
@@ -191,10 +191,15 @@ function stateClick() {
         createTable(filteredStateMembers);
         }                                       
 }
-stateClick();
+// stateClick();
 
 // var overlay = document.getElementById("overlay");
 
 // window.addEventListener('load', function(){
 //   overlay.style.display = 'none';
 // })
+
+function loader() {
+    document.getElementById("loader").style.display = "none";
+}
+

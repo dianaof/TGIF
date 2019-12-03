@@ -19,6 +19,7 @@ headers: {
 
     houseMembers = json.results[0].members;
 
+        loader();
         createTable(houseMembers);
         stateSelect();
 
@@ -171,8 +172,6 @@ function stateClick() {
         var message = document.createElement ("td");
        
         message.innerHTML = "No Results Matching."
-        
-        document.getElementById("houseState").append(message);
        
         row.append(message);
        
@@ -182,4 +181,9 @@ function stateClick() {
         createTable(filteredHouseMembers);
         }                                       
 }
-  
+
+function loader() {
+    document.getElementById("loader").style.display = "none";
+}
+
+
