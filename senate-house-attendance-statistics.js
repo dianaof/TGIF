@@ -1,5 +1,36 @@
 
-var membersSenate = data.results[0].members;
+var membersSenate;
+
+fetch ("https://api.propublica.org/congress/v1/113/senate/members.json",{
+
+method: "GET",
+headers: {
+    'X-API-key': 'USiTg4aV1o26w6EjIpr190WMQ6HdnmD1gael0wFG'
+}}).then(function (response) {
+
+    if (response.ok) {
+        console.log(response);
+        return response.json();
+    }
+
+    throw new Error(response.statusText);
+}).then(function (json) {
+
+    senateMembers = json.results[0].members;
+        
+        // loader();
+        // createTable(senateMembers);
+        // stateSelect();
+        
+
+    console.log(membersSenate);
+
+}).catch(function (error) {
+
+    console.log("Request failed: " + error.message);
+});
+
+// var membersSenate = data.results[0].members;
 
 var statistics = {
     numDem: 0,
@@ -26,7 +57,7 @@ function populateStatistics(){
 
     for(var i=0; i < membersSenate.length; i++) {
         if(membersSenate[i].party == "D"){
-            statistics.numDem = statistics.numDem + 1;
+            statistics.numDem += 1;
             demTotalVotes = demTotalVotes + membersSenate[i].votes_with_party_pct;
         } 
         else if(membersSenate[i].party == "R"){
@@ -203,5 +234,9 @@ function createTableTop (listTop) {
         document.getElementById("table-pcttop").appendChild(newRow);
     }
     // console.log(createTableTop)
+}
+
+function loader() {
+    document.getElementById("loader").style.display = "none";
 }
 

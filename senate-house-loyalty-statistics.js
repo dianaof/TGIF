@@ -11,6 +11,7 @@ var statistics = {
     totalVotes: 0
 }
 
+
 var tenpct = Math.round(membersSenate.length*0.1);
 var listVotesBottom = [];
 var listVotesTop = [];
@@ -43,11 +44,11 @@ function populateStatistics(){
 
         statistics.repVotesPct = (repTotalVotes/statistics.numRep);
 
-        statistics.indVotesPct = (indTotalVotes/statistics.numInd);
+        statistics.indVotesPct = 0;
 
         statistics.totalNum = (statistics.numDem + statistics.numRep + statistics.numInd);
         
-        statistics.totalVotes = (statistics.demVotesPct + statistics.repVotesPct + statistics.indVotesPct) / 3;
+        statistics.totalVotes = (statistics.demVotesPct + statistics.repVotesPct + statistics.indVotesPct) / 2;
 }
 
 function fillAtGlanceTable(){
