@@ -13,15 +13,12 @@
             <a href="mailto:info@tgif.net">info@tgif.net</a>
           </div>
     </header>
-    <body id="senate-data" class="container">
+    <body id="data" class="container">
         <div class="loader" id="loader" >
             <img src="./spinner.gif" alt="Loading...">
           </div>
-      <nav class="navbar navbar-default">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <div class="navbar-header">
-            <!-- <a class="navbar-brand" href="#">TGIF</a> -->
-          </div>
           <ul class="nav navbar-nav">
             <li class="active"><a href="./index.html">Home</a></li>
             <li class="dropdown">
@@ -61,7 +58,8 @@
             <input id="democrat" name="democrat" type="checkbox" />Democrat
             <input id="independent" name="independent" type="checkbox" />Independent  
           </form>
-          <select id="stateSelect">
+
+          <select class="float-right" id="stateSelect">
               <option value="All">All</option>
           </select>            
           <table class="table borderless">
@@ -74,7 +72,7 @@
                       <th>% Votes w/ Party</th>
                     </tr>
                 </thead>
-                <tbody id="senate-table">
+                <tbody id="table">
                     
                 </tbody>
             </table class="table borderless">
@@ -84,7 +82,7 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> 
-        <script src="./pro-congress-113-senate.js"></script>
-        <script src="./senate-data.js"></script>  
+        <!-- <script src="./pro-congress-113-senate.js"></script> -->
+        <script src="./data.js"></script>  
     </body>
 </html>
