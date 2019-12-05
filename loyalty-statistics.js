@@ -6,7 +6,7 @@ if (document.URL.includes("senate")) {
   chamber = "house";
 }
 
-fetch("https://api.propublica.org/congress/v1/113/${chamber}/members.json", {
+fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
   method: "GET",
   headers: {
     "X-API-key": "USiTg4aV1o26w6EjIpr190WMQ6HdnmD1gael0wFG"
@@ -24,14 +24,17 @@ fetch("https://api.propublica.org/congress/v1/113/${chamber}/members.json", {
     var members = json.results[0].members;
 
     loader();
+    populateStatistics(members);
+    fillAtGlanceTable(members);
+    createTableBottom(members);
+    createTableTop(members);
+    pctLoyaltyTopBottom(members);
 
     console.log(members);
   })
   .catch(function(error) {
     console.log("Request failed: " + error.message);
   });
-
-// var membersSenate = data.results[0].members;
 
 var statistics = {
   numDem: 0,
@@ -50,7 +53,7 @@ var listVotesTop = [];
 var orderedTop = Array.from(members);
 var orderedBottom = Array.from(members);
 
-function populateStatistics() {
+function populateStatistics(members) {
   var demTotalVotes = 0;
   var repTotalVotes = 0;
   var indTotalVotes = 0;
@@ -82,7 +85,7 @@ function populateStatistics() {
     3;
 }
 
-function fillAtGlanceTable() {
+function fillAtGlanceTable(members) {
   var statisticsTable = document.getElementById("loyalty-table");
 
   var democratsRow = document.createElement("tr");
@@ -136,11 +139,8 @@ function fillAtGlanceTable() {
   // console.log(statistics)
 }
 
-populateStatistics();
-fillAtGlanceTable();
-
-function pctLoyaltyTopBottom() {
-  var attendaceTop = document.getElementById("table-pcttop");
+function pctLoyaltyTopBottom(members) {
+  var loyaltyTop = document.getElementById("table-pcttop");
 
   orderedTop.sort(function(a, b) {
     return a.votes_with_party_pct - b.votes_with_party_pct;
@@ -150,19 +150,11 @@ function pctLoyaltyTopBottom() {
     listVotesTop.push(orderedTop[i]);
   }
 
-  // for (i=tenpct; orderedTop.length; i++;){
-
-  //     if (tenpct[tenpct.length].votes_with_party_pct == orderedTop[i].votes_with_party_pct) {
-  //        tenpct.push(orderedTop[i]);
-  //     }
-  // }
-  // }
-
   createTableTop(listVotesTop);
 
   //----------
 
-  var attendaceBottom = document.getElementById("table-pctbottom");
+  var loyaltyBottom = document.getElementById("table-pctbottom");
 
   orderedBottom.sort(function(a, b) {
     return b.votes_with_party_pct - a.votes_with_party_pct;

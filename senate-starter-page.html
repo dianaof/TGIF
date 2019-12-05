@@ -7,10 +7,22 @@
         <link rel="stylesheet" type="text/css" href="./index.css">
     </head>
     <header class="container">            
-        <div>
-            <img src="./Logo.jpg" class="img-responsive" alt="Cinque Terre" width="230" height="200">
-            <p><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></p>
-            <a href="mailto:info@tgif.net">info@tgif.net</a>
+        <div class="headerflex-container">
+            <div>
+              <img
+                src="./Logo.jpg"
+                class="img-responsive"
+                alt="Cinque Terre"
+                width="230"
+                height="200"
+              />
+            </div>
+            <div>
+              <p>
+                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+              </p>
+              <a href="mailto:info@tgif.net">info@tgif.net</a>
+            </div>
           </div>
     </header>
     <body id="data" class="container">
@@ -50,10 +62,12 @@
   </div>
         
         <!--Table container-->
-        <div>
-            <h2>Senators</h2>
+       
+          <div>
+          <h2>Senators</h2>
             <p>First convened in 1789, the composition and powers of the Senate are established in Article One of the U.S. Constitution. Each state is represented by two senators, regardless of population, who serve staggered six-year terms. The Senate has several exclusive powers not granted to the House, including consenting to treaties as a precondition to their ratification and consenting to or confirming appointments of Cabinet secretaries, federal judges, other federal executive officials, military officers, regulatory officials, ambassadors, and other federal uniformed officers, as well as trial of federal officials impeached by the House.</p>
-          <form method="get" action="">
+            <div>
+          <form class="float-left" method="get" action="">
             <input id="republican" name="republican" type="checkbox" />Republican
             <input id="democrat" name="democrat" type="checkbox" />Democrat
             <input id="independent" name="independent" type="checkbox" />Independent  
@@ -61,7 +75,8 @@
 
           <select class="float-right" id="stateSelect">
               <option value="All">All</option>
-          </select>            
+          </select>
+         </div>           
           <table class="table borderless">
                 <thead>
                     <tr>

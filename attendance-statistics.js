@@ -1,5 +1,3 @@
-// var membersSenate;
-
 let chamber;
 
 if (document.URL.includes("senate")) {
@@ -8,7 +6,7 @@ if (document.URL.includes("senate")) {
   chamber = "house";
 }
 
-fetch("https://api.propublica.org/congress/v1/113/senate/members.json", {
+fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
   method: "GET",
   headers: {
     "X-API-key": "USiTg4aV1o26w6EjIpr190WMQ6HdnmD1gael0wFG"
@@ -23,17 +21,20 @@ fetch("https://api.propublica.org/congress/v1/113/senate/members.json", {
     throw new Error(response.statusText);
   })
   .then(function(json) {
-    membersSenate = json.results[0].members;
+    var members = json.results[0].members;
 
-    // loader();
-    // createTable(senateMembers);
-    // stateSelect();
+    loader();
+    populateStatistics(members);
+    fillAtGlanceTable(members);
+    createTableBottom(members);
+    createTableTop(members);
+    pctLoyaltyTopBottom(members);
+
+    console.log(members);
   })
   .catch(function(error) {
     console.log("Request failed: " + error.message);
   });
-
-// var membersSenate = data.results[0].members;
 
 var statistics = {
   numDem: 0,
@@ -46,27 +47,27 @@ var statistics = {
   totalVotes: 0
 };
 
-var tenpct = Math.round(membersSenate.length * 0.1);
+var tenpct = Math.round(members.length * 0.1);
 var listVotesBottom = [];
 var listVotesTop = [];
-var orderedTop = Array.from(membersSenate);
-var orderedBottom = Array.from(membersSenate);
+var orderedTop = Array.from(members);
+var orderedBottom = Array.from(members);
 
-function populateStatistics() {
+function populateStatistics(members) {
   var demTotalVotes = 0;
   var repTotalVotes = 0;
   var indTotalVotes = 0;
 
-  for (var i = 0; i < membersSenate.length; i++) {
-    if (membersSenate[i].party == "D") {
+  for (var i = 0; i < members.length; i++) {
+    if (members[i].party == "D") {
       statistics.numDem += 1;
-      demTotalVotes = demTotalVotes + membersSenate[i].votes_with_party_pct;
-    } else if (membersSenate[i].party == "R") {
+      demTotalVotes = demTotalVotes + members[i].votes_with_party_pct;
+    } else if (members[i].party == "R") {
       statistics.numRep = statistics.numRep + 1;
-      repTotalVotes = repTotalVotes + membersSenate[i].votes_with_party_pct;
+      repTotalVotes = repTotalVotes + members[i].votes_with_party_pct;
     } else {
       statistics.numInd = statistics.numInd + 1;
-      indTotalVotes = indTotalVotes + membersSenate[i].votes_with_party_pct;
+      indTotalVotes = indTotalVotes + members[i].votes_with_party_pct;
     }
   }
 
@@ -84,10 +85,8 @@ function populateStatistics() {
     3;
 }
 
-function fillAtGlanceTable() {
-  var statisticsTable = document.getElementById(
-    "senate-house-attendance-table"
-  );
+function fillAtGlanceTable(members) {
+  var statisticsTable = document.getElementById("attendance-table");
 
   var democratsRow = document.createElement("tr");
   var demParty = document.createElement("td");
@@ -136,14 +135,9 @@ function fillAtGlanceTable() {
 
   totalRow.append(totalParty, totalMembers, totalVotes);
   statisticsTable.appendChild(totalRow);
-
-  // console.log(statistics)
 }
 
-populateStatistics();
-fillAtGlanceTable();
-
-function pctLoyaltyTopBottom() {
+function pctLoyaltyTopBottom(members) {
   orderedTop.sort(function(a, b) {
     return a.missed_votes_pct - b.missed_votes_pct;
   });
@@ -161,8 +155,6 @@ function pctLoyaltyTopBottom() {
     }
   }
 
-  // console.log(listVotesTop);
-
   createTableTop(listVotesTop);
 
   //----------
@@ -174,12 +166,6 @@ function pctLoyaltyTopBottom() {
   for (var i = 0; i < tenpct; i++) {
     listVotesBottom.push(orderedBottom[i]);
   }
-
-  // for (i=tenpct; i < orderedBottom.length; i++){
-
-  //     if (listVotesBottom[listVotesBottom.length -1].missed_votes_pct == orderedBottom[i].missed_votes_pct) {
-  //        listVotesBottom.push(orderedBottom[i]);
-  //     }
 
   createTableBottom(listVotesBottom);
 }

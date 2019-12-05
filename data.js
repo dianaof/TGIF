@@ -1,4 +1,3 @@
-//document.getElementById("senate-data").innerHTML = JSON.stringify(data,null,2);
 let chamber;
 
 if (document.URL.includes("senate")) {
@@ -7,7 +6,7 @@ if (document.URL.includes("senate")) {
   chamber = "house";
 }
 
-fetch("https://api.propublica.org/congress/v1/113/${chamber}/members.json", {
+fetch(`https://api.propublica.org/congress/v1/113/${chamber}/members.json`, {
   method: "GET",
   headers: {
     "X-API-key": "USiTg4aV1o26w6EjIpr190WMQ6HdnmD1gael0wFG"

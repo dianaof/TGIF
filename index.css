@@ -1,8 +1,22 @@
-#more {display: none;}
+#more {
+  display: none;
+}
 
 .loader {
-  display: flex;  
+  display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.headerflex-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
 }
